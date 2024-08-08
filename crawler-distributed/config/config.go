@@ -8,7 +8,8 @@ const (
 
 	ElasticIndex = "dating_profile"
 
-	ItemSaverRpcMethod = "ItemSaverService.Save"
+	ItemSaverRpcMethod    = "ItemSaverService.Save"
+	CrawlServiceRpcMethod = "CrawlService.Process"
 
 	// Parser Names
 	ParseCity     = "ParseCity"

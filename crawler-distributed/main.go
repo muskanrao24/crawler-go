@@ -2,7 +2,8 @@ package main
 
 import (
 	"distributed-web-crawler/crawler-distributed/config"
-	"distributed-web-crawler/crawler-distributed/persist/client"
+	itemSaver "distributed-web-crawler/crawler-distributed/persist/client"
+	worker "distributed-web-crawler/crawler-distributed/worker/client"
 	"distributed-web-crawler/crawler/dating/parser"
 	"distributed-web-crawler/crawler/engine"
 	"distributed-web-crawler/crawler/scheduler"
@@ -12,19 +13,27 @@ import (
 const cityUrl = "http://www.zhenai.com/zhenghun"
 
 func main() {
-	itemChan, err := client.ItemSaver(
+	itemChan, err := itemSaver.ItemSaver(
 		fmt.Sprintf(":%d", config.ItemSaverPort))
 	if err != nil {
 		panic(err)
 	}
-	e := engine.ConcurrentEngine{
-		Scheduler:   &scheduler.QueuedScheduler{},
-		WorkerCount: 100,
-		ItemChan:    itemChan,
+
+	processor, err := worker.CreateProcessor()
+	if err != nil {
+		panic(err)
 	}
+
+	e := engine.ConcurrentEngine{
+		Scheduler:        &scheduler.QueuedScheduler{},
+		WorkerCount:      100,
+		ItemChan:         itemChan,
+		RequestProcessor: processor,
+	}
+
 	e.Run(engine.Request{
 		Url:    cityUrl,
-		Parser: engine.NewFuncParser(parser.ParseCityList, "ParseCityList"),
+		Parser: engine.NewFuncParser(parser.ParseCityList, config.ParseCityList),
 	})
 
 	//e.Run(engine.Request{

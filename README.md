@@ -1,5 +1,5 @@
 # distributed-web-crawler
-course project for Introduction yo Golang on imooc.
+course project for Introduction of Golang on imooc.
 
 ## 单机版 / Single node version
 /crawler
@@ -17,22 +17,23 @@ course project for Introduction yo Golang on imooc.
 `(under project root directory) cd crawler`
 
 `go run main.go`
-### 页面 / Simple front end page :
-`(under project root directory) cd front-end`
-
-`go run start.go`
 
 ### 分布式版 / Distributed version :
 `docker run -d -p 9200:9200 elasticsearch:x.x.x (your es version)`
+
+`(under crawler-distributed) cd persist`
+
+`go run itemSaver.go`
+
+`(under crawler-distributed) cd worker/server`
+
+`go run worker.go (start as many server as you want, as long as you add port configuration and set them in config.go)`
 
 `(under project root directory) cd crawler-distributed`
 
 `go run main.go`
 
-`(under crawler-distributed) cd persist`
+### 页面 / Simple front end page :
+`(under project root directory) cd front-end`
 
-`go run main.go`
-
-`(under crawler-distributed) cd worker/server`
-
-`go run main.go (start as many server as you want, as long as you add port configuration and set them in config.go)`
+`go run start.go`

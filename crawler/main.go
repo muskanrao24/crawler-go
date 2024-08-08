@@ -10,17 +10,16 @@ import (
 
 const cityUrl = "http://www.zhenai.com/zhenghun"
 
-const index = "dating_profile"
-
 func main() {
-	itemChan, err := persist.ItemSaver(index)
+	itemChan, err := persist.ItemSaver(config.ElasticIndex)
 	if err != nil {
 		panic(err)
 	}
 	e := engine.ConcurrentEngine{
-		Scheduler:   &scheduler.QueuedScheduler{},
-		WorkerCount: 100,
-		ItemChan:    itemChan,
+		Scheduler:        &scheduler.QueuedScheduler{},
+		WorkerCount:      100,
+		ItemChan:         itemChan,
+		RequestProcessor: engine.Worker,
 	}
 	e.Run(engine.Request{
 		Url:    cityUrl,
