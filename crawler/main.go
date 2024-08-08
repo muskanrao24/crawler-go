@@ -1,6 +1,7 @@
 package main
 
 import (
+	"distributed-web-crawler/crawler-distributed/config"
 	"distributed-web-crawler/crawler/dating/parser"
 	"distributed-web-crawler/crawler/engine"
 	"distributed-web-crawler/crawler/persist"
@@ -22,8 +23,8 @@ func main() {
 		ItemChan:    itemChan,
 	}
 	e.Run(engine.Request{
-		Url:        cityUrl,
-		ParserFunc: parser.ParseCityList,
+		Url:    cityUrl,
+		Parser: engine.NewFuncParser(parser.ParseCityList, config.ParseCityList),
 	})
 
 	//e.Run(engine.Request{

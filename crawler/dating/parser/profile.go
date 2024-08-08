@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"distributed-web-crawler/crawler-distributed/config"
 	"distributed-web-crawler/crawler/engine"
 	"distributed-web-crawler/crawler/models"
 	"github.com/valyala/fastjson"
@@ -133,7 +134,7 @@ func parseProfile(content []byte, url string, name string) engine.ParseResult {
 		result.Requests = append(result.Requests,
 			engine.Request{
 				Url:    string(m[1]),
-				Parser: engine.NewFuncParser(ParseCity, "ParseCity"),
+				Parser: engine.NewFuncParser(ParseCity, config.ParseCity),
 			})
 	}
 
@@ -159,7 +160,7 @@ func (p *ProfileParser) Parse(contents []byte, url string) engine.ParseResult {
 }
 
 func (p *ProfileParser) Serialize() (name string, args interface{}) {
-	return "ProfileParser", p.userName
+	return config.ParseProfile, p.userName
 }
 
 func NewProfileParser(name string) *ProfileParser {

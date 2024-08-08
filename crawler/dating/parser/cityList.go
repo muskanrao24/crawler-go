@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"distributed-web-crawler/crawler-distributed/config"
 	"distributed-web-crawler/crawler/engine"
 	"regexp"
 )
@@ -22,7 +23,7 @@ func ParseCityList(contents []byte, _ string) engine.ParseResult {
 		result.Requests = append(result.Requests,
 			engine.Request{
 				Url:    string(m[1]),
-				Parser: engine.NewFuncParser(ParseCity, "ParseCity"),
+				Parser: engine.NewFuncParser(ParseCity, config.ParseCity),
 			})
 		// limit--
 		//if limit == 0 {
