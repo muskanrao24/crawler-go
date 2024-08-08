@@ -1,11 +1,13 @@
 package engine
 
 import (
-	"distributed-web-crawler/crawler/fetcher"
 	"log"
 )
 
-func Run(seeds ...Request) {
+type SimpleEngine struct {
+}
+
+func (e SimpleEngine) Run(seeds ...Request) {
 	var requests []Request
 
 	for _, r := range seeds {
@@ -16,14 +18,10 @@ func Run(seeds ...Request) {
 		r := requests[0]
 		requests = requests[1:]
 
-		log.Printf("Fetching url %s", r.Url)
-		body, err := fetcher.Fetch(r.Url)
+		parseResult, err := worker(r)
 		if err != nil {
-			log.Printf("Fetcher: error fetching url %s: %v", r.Url, err)
 			continue
 		}
-
-		parseResult := r.ParserFunc(body)
 
 		requests = append(requests, parseResult.Requests...)
 

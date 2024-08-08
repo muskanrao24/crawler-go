@@ -1,18 +1,19 @@
 package main
 
 import (
+	"distributed-web-crawler/crawler-distributed/config"
+	"distributed-web-crawler/crawler-distributed/persist/client"
 	"distributed-web-crawler/crawler/dating/parser"
 	"distributed-web-crawler/crawler/engine"
-	"distributed-web-crawler/crawler/persist"
 	"distributed-web-crawler/crawler/scheduler"
+	"fmt"
 )
 
 const cityUrl = "http://www.zhenai.com/zhenghun"
 
-const index = "dating_profile"
-
 func main() {
-	itemChan, err := persist.ItemSaver(index)
+	itemChan, err := client.ItemSaver(
+		fmt.Sprintf(":%d", config.ItemSaverPort))
 	if err != nil {
 		panic(err)
 	}
@@ -22,8 +23,8 @@ func main() {
 		ItemChan:    itemChan,
 	}
 	e.Run(engine.Request{
-		Url:        cityUrl,
-		ParserFunc: parser.ParseCityList,
+		Url:    cityUrl,
+		Parser: engine.NewFuncParser(parser.ParseCityList, "ParseCityList"),
 	})
 
 	//e.Run(engine.Request{

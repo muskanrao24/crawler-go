@@ -14,5 +14,7 @@ func TestParseCityList(t *testing.T) {
 
 	fmt.Printf("%s\n", contents)
 
-	ParseCityList(contents)
+	result := ParseCityList(contents)
+
+	fmt.Print(len(result.Requests))
 }
