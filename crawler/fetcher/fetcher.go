@@ -25,6 +25,8 @@ func Fetch(url string) ([]byte, error) {
 	// 限流
 	<-rateLimiter
 
+	log.Printf("Fetching url %s", url)
+
 	req, err := http.NewRequest(http.MethodGet, url, nil)
 	if err != nil {
 		return nil, err
